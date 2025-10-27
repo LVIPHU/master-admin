@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "lingui:extract && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint --no-cache",
     "lint:fix": "eslint --no-cache --fix",

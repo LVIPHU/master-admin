@@ -1,7 +1,27 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  turbopack: {
+    rules: {
+      '*.po': {
+        loaders: ['@lingui/loader'],
+        as: '*.js',
+      },
+    },
+  },
+  experimental: {
+    swcPlugins: [['@lingui/swc-plugin', {}]],
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.po$/,
+      use: {
+        loader: '@lingui/loader',
+      },
+    })
 
-export default nextConfig;
+    return config
+  },
+}
+
+export default nextConfig

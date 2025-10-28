@@ -5,12 +5,15 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
+  CircleQuestionMarkIcon,
   Command,
   Frame,
   GalleryVerticalEnd,
   Map,
   PieChart,
+  SearchIcon,
   Settings2,
+  SettingsIcon,
   SquareTerminal,
 } from 'lucide-react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
@@ -18,6 +21,7 @@ import NavMain from './nav-main'
 import NavProjects from './nav-projects'
 import NavUser from './nav-user'
 import TeamSwitcher from './team-switcher'
+import { NavSecondary } from '@/components/organisms/app-sidebar/nav-secondary'
 
 // This is sample data.
 const data = {
@@ -28,20 +32,20 @@ const data = {
   },
   teams: [
     {
-      name: 'Acme Inc',
+      name: 'TBC Admin',
       logo: GalleryVerticalEnd,
       plan: 'Enterprise',
     },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free',
-    },
+    // {
+    //   name: 'TBC Admin',
+    //   logo: AudioWaveform,
+    //   plan: 'Startup',
+    // },
+    // {
+    //   name: 'TBC Admin',
+    //   logo: Command,
+    //   plan: 'Free',
+    // },
   ],
   navMain: [
     {
@@ -147,6 +151,23 @@ const data = {
       icon: Map,
     },
   ],
+  navSecondary: [
+    {
+      title: 'Settings',
+      url: '#',
+      icon: SettingsIcon,
+    },
+    {
+      title: 'Get Help',
+      url: '#',
+      icon: CircleQuestionMarkIcon,
+    },
+    {
+      title: 'Search',
+      url: '#',
+      icon: SearchIcon,
+    },
+  ],
 }
 
 export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -158,6 +179,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
+        <NavSecondary items={data.navSecondary} className='mt-auto' />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

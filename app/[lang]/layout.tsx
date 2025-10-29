@@ -6,6 +6,7 @@ import { PageLangParam } from '@/i18n/initLingui'
 import ProviderRegistry from '@/providers'
 import { msg } from '@lingui/core/macro'
 import { Metadata } from 'next'
+import { Toaster } from '@/components/ui/sonner'
 import '../globals.css'
 
 const geistSans = Geist({
@@ -36,6 +37,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     <html lang={lang} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased`}>
         <ProviderRegistry params={params}>{children}</ProviderRegistry>
+        <Toaster />
       </body>
     </html>
   )

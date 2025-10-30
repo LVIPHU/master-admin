@@ -150,7 +150,16 @@ export default function VoucherTemplate() {
     {
       accessorKey: 'valueUSD',
       header: `${capitalizeFirst(tabValue)} Voucher Value`,
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.valueUSD}</p>,
+      cell: ({ row }) => (
+        <p className='px-3 text-right'>
+          {new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(row.original.valueUSD)}
+        </p>
+      ),
     },
     {
       accessorKey: 'percent',

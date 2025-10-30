@@ -107,7 +107,7 @@ export function DataTable() {
     },
     {
       accessorKey: 'amountTBC',
-      header: 'Buyer Commission Amount',
+      header: 'Buyer Commission Amount (TBC)',
       cell: ({ row }) => (
         <form
           className='flex items-center justify-end'
@@ -136,7 +136,6 @@ export function DataTable() {
             defaultValue={row.original.amountTBC}
             id={`${row.original.package}-buyer-commission-amount`}
           />
-          <p>%</p>
         </form>
       ),
     },
@@ -153,7 +152,16 @@ export function DataTable() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.valueUSD}</p>,
+      cell: ({ row }) => (
+        <p className='px-3 text-right'>
+          {new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(row.original.valueUSD)}
+        </p>
+      ),
     },
     {
       accessorKey: 'finalPercent',
@@ -170,7 +178,7 @@ export function DataTable() {
       ),
       cell: ({ row }) => (
         <form
-          className='flex justify-end'
+          className='flex items-center justify-end'
           onSubmit={(e) => {
             e.preventDefault()
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
@@ -188,6 +196,7 @@ export function DataTable() {
             defaultValue={row.original.finalPercent}
             id={`${row.original.package}-final-buyer-commission`}
           />
+          <p>%</p>
         </form>
       ),
     },
@@ -251,7 +260,16 @@ export function DataTable() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.standardValueUSD}</p>,
+      cell: ({ row }) => (
+        <p className='px-3 text-right'>
+          {new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(row.original.standardValueUSD)}
+        </p>
+      ),
     },
     {
       id: 'title_1',
@@ -305,7 +323,16 @@ export function DataTable() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.discountValueUSD}</p>,
+      cell: ({ row }) => (
+        <p className='px-3 text-right'>
+          {new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(row.original.discountValueUSD)}
+        </p>
+      ),
     },
     {
       accessorKey: 'discountValuePerPackage',
@@ -320,7 +347,16 @@ export function DataTable() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.discountValuePerPackage}</p>,
+      cell: ({ row }) => (
+        <p className='px-3 text-right'>
+          {new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(row.original.discountValuePerPackage)}
+        </p>
+      ),
     },
     {
       accessorKey: 'extraPercent',
@@ -357,7 +393,16 @@ export function DataTable() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.totalValueUSD}</p>,
+      cell: ({ row }) => (
+        <p className='px-3 text-right'>
+          {new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          }).format(row.original.totalValueUSD)}
+        </p>
+      ),
     },
     {
       accessorKey: 'totalPercent',

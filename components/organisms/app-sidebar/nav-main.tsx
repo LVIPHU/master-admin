@@ -13,7 +13,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
-import NavItems from '@/components/organisms/app-sidebar/nav-Items'
+import NavItems from '@/components/organisms/app-sidebar/nav-items'
 
 export default function NavMain({
   items,

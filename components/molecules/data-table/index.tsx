@@ -204,6 +204,13 @@ export function DataTable() {
 
   const columnsStandardCommission: ColumnDef<BuyerCommissionRow>[] = [
     {
+      id: 'title_0',
+      header: 'Buyer Standard Commision',
+      cell: () => {
+        return null
+      },
+    },
+    {
       accessorKey: 'package',
       header: 'Buyer Commission Package',
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.package}</p>,
@@ -286,6 +293,12 @@ export function DataTable() {
           className='flex items-center justify-end'
           onSubmit={(e) => {
             e.preventDefault()
+            const input = e.currentTarget.querySelector('input')
+            const value = input?.value
+
+            if (!value) return
+
+            updateCell('packageDiscountPercent', row.index, Number(value))
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
               loading: `Saving ${row.original.discountPercent}`,
               success: 'Done',

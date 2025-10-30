@@ -108,7 +108,7 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
       const discountValueUSD = discountAmountTBC * tbcPrice
       const discountValuePerPackage = discountValueUSD / pkg
 
-      const extraPercent = amountTBC ? (discountAmountTBC / amountTBC) * 100 : 0
+      const extraPercent = Math.round(amountTBC ? (discountAmountTBC / amountTBC) * 100 : 0)
       const totalPercent = standardPercent + extraPercent
       const totalValueUSD = standardValueUSD + discountValueUSD
 
@@ -143,6 +143,8 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
 
   const data = useMemo(() => calculateBuyerCommission(), [calculateBuyerCommission])
 
+  console.log('data', data)
+
   // === UPDATE CELL ===
   const updateCell = useCallback((section: string, index: number, newValue: number) => {
     const value = parseFloat(String(newValue)) || 0
@@ -156,9 +158,13 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
 
   // === ADD / REMOVE ROW ===
   const addPackage = useCallback(() => {
-    setBuyerCommissionAmount((prev: never[]) => [...prev, 0])
-    setBuyerStandardCommissionPercent((prev: never[]) => [...prev, 0])
-    setPackageDiscountPercent((prev: never[]) => [...prev, 0])
+    setBuyerCommissionAmount((prev: never[]) => [...prev, prev[prev.length - 1] + 100 || 0])
+    setBuyerStandardCommissionPercent((prev: never[]) => [...prev, prev[prev.length - 1] + 1 || 0])
+    setPackageDiscountPercent((prev: never[]) => {
+      const nextIndex = prev.length + 1
+      const nextValue = nextIndex ** 2
+      return [...prev, nextValue]
+    })
   }, [])
 
   const removePackage = useCallback((index: number) => {

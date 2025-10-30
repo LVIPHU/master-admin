@@ -28,14 +28,22 @@ function createVoucherContext(name: string) {
   const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { tbcPrice } = useBuyerCommission()
     const { getEvent } = useEventPercentage()
+    const [qualityVoucher, setQualityVoucher] = useState(() => {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('qualityVoucher')
+        if (saved) return JSON.parse(saved)
+      }
+      return 10
+    })
 
     const [voucherAmount, setVoucherAmount] = useState(() => {
       if (typeof window !== 'undefined') {
         const saved = localStorage.getItem('voucherAmount')
         if (saved) return JSON.parse(saved)
       }
-      return [300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 76800, 153600]
+      return 300
     })
+
     const [voucherPercent, setVoucherPercent] = useState(() => {
       if (typeof window !== 'undefined') {
         const saved = localStorage.getItem('voucherPercent')
@@ -43,6 +51,10 @@ function createVoucherContext(name: string) {
       }
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     })
+
+    useEffect(() => {
+      localStorage.setItem('qualityVoucher', JSON.stringify(qualityVoucher))
+    }, [qualityVoucher])
 
     useEffect(() => {
       localStorage.setItem('voucherAmount', JSON.stringify(voucherAmount))
@@ -60,12 +72,14 @@ function createVoucherContext(name: string) {
     console.log(`${name}Voucher`, eventVoucherPercent)
 
     const calculateVoucher = useCallback((): VoucherRow[] => {
-      return voucherAmount.map((amount: never, i: never) => {
-        const pkg = i + 1
+      return Array.from({ length: qualityVoucher }, (_, i) => i).map((idx: number) => {
+        const amount = voucherAmount * 2 ** idx
+        const pkg = idx + 1
         const amountTBC = amount ?? 0
         const valueUSD = amountTBC * tbcPrice
-        const percent = voucherPercent[i] ?? 0
+        const percent = voucherPercent[idx] ?? 0
         const finalPercent = percent + eventVoucherPercent
+        console.log('finalPercent', finalPercent)
         const finalValueUSD = valueUSD * (1 + eventVoucherPercent / 100)
 
         return {
@@ -77,28 +91,25 @@ function createVoucherContext(name: string) {
           finalValueUSD,
         }
       })
-    }, [tbcPrice, voucherAmount, voucherPercent, eventVoucherPercent])
+    }, [qualityVoucher, voucherAmount, tbcPrice, voucherPercent, eventVoucherPercent])
 
     const data = useMemo(() => calculateVoucher(), [calculateVoucher])
 
     // ======== UPDATE ========
     const updateCell = useCallback((section: string, index: number, newValue: number) => {
       const value = parseFloat(String(newValue)) || 0
-      if (section === 'voucherAmount')
-        setVoucherAmount((prev: never[]) => prev.map((v, i) => (i === index ? value : v)))
+      if (section === 'voucherAmount') setVoucherAmount(value)
       if (section === 'voucherPercent')
         setVoucherPercent((prev: never[]) => prev.map((v, i) => (i === index ? value : v)))
     }, [])
 
     // ======== ADD/REMOVE ========
     const addPackage = useCallback(() => {
-      setVoucherAmount((prev: never[]) => [...prev, prev[prev.length - 1] * 2 || 0])
-      setVoucherPercent((prev: never[]) => [...prev, prev[prev.length - 1] + 1 || 0])
+      setQualityVoucher((prev: number) => prev + 1)
     }, [])
 
-    const removePackage = useCallback((index: number) => {
-      setVoucherAmount((prev: never[]) => prev.filter((_, i) => i !== index))
-      setVoucherPercent((prev: never[]) => prev.filter((_, i) => i !== index))
+    const removePackage = useCallback(() => {
+      setQualityVoucher((prev: number) => prev - 1)
     }, [])
 
     const value: VoucherContextValue = {

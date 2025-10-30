@@ -28,7 +28,6 @@ interface EventPercentageContextValue {
 const EventPercentageContext = createContext<EventPercentageContextValue | null>(null)
 
 export const EventPercentageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Dữ liệu mặc định theo bảng bạn chụp
   const [events, setEvents] = useState<EventPercentage[]>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('events')

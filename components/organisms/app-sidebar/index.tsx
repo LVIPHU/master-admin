@@ -2,19 +2,14 @@
 
 import * as React from 'react'
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
   CircleQuestionMarkIcon,
-  Command,
-  Frame,
   GalleryVerticalEnd,
-  Map,
-  PieChart,
   SearchIcon,
-  Settings2,
+  Calendar,
+  Users,
   SettingsIcon,
   SquareTerminal,
+  BadgeDollarSign,
 } from 'lucide-react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 import NavMain from './nav-main'
@@ -49,24 +44,28 @@ const data = {
   ],
   navMain: [
     {
-      title: 'Package',
-      url: '#',
+      title: 'Commission Package',
+      url: '/admin/dashboard',
       icon: SquareTerminal,
       isActive: true,
-      items: [
-        {
-          title: 'Commission',
-          url: '/admin/dashboard',
-        },
-        {
-          title: 'Voucher',
-          url: '/admin/voucher',
-        },
-        {
-          title: 'Event',
-          url: '/admin/event',
-        },
-      ],
+    },
+    {
+      title: 'Voucher Package',
+      url: '/admin/voucher',
+      icon: BadgeDollarSign,
+      isActive: false,
+    },
+    {
+      title: 'Event',
+      url: '/admin/event',
+      icon: Calendar,
+      isActive: false,
+    },
+    {
+      title: 'Users',
+      url: '/admin/users',
+      icon: Users,
+      isActive: false,
     },
     // {
     //   title: 'Models',

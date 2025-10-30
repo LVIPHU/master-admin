@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 export default function AdminLayout({ children }: Readonly<PropsWithChildren>) {
   const { tbcPrice, setTbcPrice } = useBuyerCommission()
   return (
-    <SidebarProvider defaultOpen={false}>
+    <SidebarProvider defaultOpen={true}>
       <AppSidebar variant='inset' />
       <SidebarInset>
         <AppHeader />

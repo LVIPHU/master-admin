@@ -56,15 +56,15 @@ const data = {
       items: [
         {
           title: 'Commission',
-          url: '/dashboard',
+          url: '/admin/dashboard',
         },
         {
           title: 'Voucher',
-          url: '/voucher',
+          url: '/admin/voucher',
         },
         {
           title: 'Event',
-          url: '/event',
+          url: '/admin/event',
         },
       ],
     },

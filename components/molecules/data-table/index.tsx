@@ -74,6 +74,7 @@ import {
   Columns2Icon,
   EllipsisIcon,
   GripVerticalIcon,
+  InfoIcon,
   LoaderIcon,
   PlusIcon,
   TrendingUpIcon,
@@ -81,6 +82,7 @@ import {
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { cn } from '@/packages/utils/styles'
 import { BuyerCommissionRow, useBuyerCommission } from '@/providers/buyer-commission.provider'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 export function DataTable() {
   const { data, updateCell, addPackage } = useBuyerCommission()
@@ -108,7 +110,7 @@ export function DataTable() {
       header: 'Buyer Commission Amount',
       cell: ({ row }) => (
         <form
-          className='flex justify-end'
+          className='flex items-center justify-end'
           onSubmit={(e) => {
             e.preventDefault()
 
@@ -120,7 +122,7 @@ export function DataTable() {
             updateCell('buyerCommissionAmount', row.index, Number(value))
 
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-              loading: `Saving ${row.original.amountTBC}`,
+              loading: `Saving ${row.original.package}`,
               success: 'Done',
               error: 'Error',
             })
@@ -134,24 +136,45 @@ export function DataTable() {
             defaultValue={row.original.amountTBC}
             id={`${row.original.package}-buyer-commission-amount`}
           />
+          <p>%</p>
         </form>
       ),
     },
     {
       accessorKey: 'valueUSD',
-      header: 'Buyer Commission Value',
+      header: () => (
+        <div className='flex items-center gap-2'>
+          <p>Buyer Commission Value</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon size={12} />
+            </TooltipTrigger>
+            <TooltipContent>Buyer Commission Amount x TBC Price</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.valueUSD}</p>,
     },
     {
       accessorKey: 'finalPercent',
-      header: 'Final Buyer Commission',
+      header: () => (
+        <div className='flex items-center gap-2'>
+          <p>Final Buyer Commission</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon size={12} />
+            </TooltipTrigger>
+            <TooltipContent>Total Buyer Commission + Event Buyer Commission</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
       cell: ({ row }) => (
         <form
           className='flex justify-end'
           onSubmit={(e) => {
             e.preventDefault()
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-              loading: `Saving ${row.original.finalPercent}`,
+              loading: `Saving ${row.original.package}`,
               success: 'Done',
               error: 'Error',
             })
@@ -162,7 +185,7 @@ export function DataTable() {
           </Label>
           <Input
             className='hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent'
-            defaultValue={row.original.package}
+            defaultValue={row.original.finalPercent}
             id={`${row.original.package}-final-buyer-commission`}
           />
         </form>
@@ -182,7 +205,7 @@ export function DataTable() {
       header: 'Buyer Standard Commission',
       cell: ({ row }) => (
         <form
-          className='flex justify-end'
+          className='flex items-center justify-end'
           onSubmit={(e) => {
             e.preventDefault()
             const input = e.currentTarget.querySelector('input')
@@ -206,6 +229,7 @@ export function DataTable() {
             defaultValue={row.original.standardPercent}
             id={`${row.original.package}-standard-percent`}
           />
+          <p>%</p>
         </form>
       ),
     },
@@ -216,7 +240,17 @@ export function DataTable() {
     },
     {
       accessorKey: 'standardValueUSD',
-      header: 'Buyer Standard Commission Value',
+      header: () => (
+        <div className='flex items-center gap-2'>
+          <p>Buyer Standard Commission Value</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon size={12} />
+            </TooltipTrigger>
+            <TooltipContent>Buyer Standard Commission Amount x TBC Price</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.standardValueUSD}</p>,
     },
     {
@@ -231,7 +265,7 @@ export function DataTable() {
       header: 'Package 1 Discount',
       cell: ({ row }) => (
         <form
-          className='flex justify-end'
+          className='flex items-center justify-end'
           onSubmit={(e) => {
             e.preventDefault()
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
@@ -249,6 +283,7 @@ export function DataTable() {
             defaultValue={row.original.discountPercent}
             id={`${row.original.package}-discount-percent`}
           />
+          <p>%</p>
         </form>
       ),
     },
@@ -259,18 +294,48 @@ export function DataTable() {
     },
     {
       accessorKey: 'discountValueUSD',
-      header: 'Package 1 Discount Value',
+      header: () => (
+        <div className='flex items-center gap-2'>
+          <p>Package 1 Discount Value</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon size={12} />
+            </TooltipTrigger>
+            <TooltipContent>Package 1 Discount Amount * TBC Price</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.discountValueUSD}</p>,
     },
     {
       accessorKey: 'discountValuePerPackage',
-      header: 'Package 1 Discount Value per Package',
+      header: () => (
+        <div className='flex items-center gap-2'>
+          <p>Package 1 Discount Value per Package</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon size={12} />
+            </TooltipTrigger>
+            <TooltipContent>Package 1 Discount Value / Buyer Commission Package</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.discountValuePerPackage}</p>,
     },
     {
       accessorKey: 'extraPercent',
-      header: 'Extra Buyer Commission',
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.extraPercent}</p>,
+      header: () => (
+        <div className='flex items-center gap-2'>
+          <p>Extra Buyer Commission</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon size={12} />
+            </TooltipTrigger>
+            <TooltipContent>Package 1 Discount Amount / Buyer Commission Amount</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+      cell: ({ row }) => <p className='px-3 text-right'>{row.original.extraPercent} %</p>,
     },
     {
       id: 'title_2',
@@ -281,13 +346,33 @@ export function DataTable() {
     },
     {
       accessorKey: 'totalValueUSD',
-      header: 'Total Buyer Commission Value',
+      header: () => (
+        <div className='flex items-center gap-2'>
+          <p>Total Buyer Commission Value</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon size={12} />
+            </TooltipTrigger>
+            <TooltipContent>Buyer Standard Commission Value + Package 1 Discount Value</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.totalValueUSD}</p>,
     },
     {
       accessorKey: 'totalPercent',
-      header: 'Total Buyer Commission',
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.totalPercent}</p>,
+      header: () => (
+        <div className='flex items-center gap-2'>
+          <p>Total Buyer Commission</p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <InfoIcon size={12} />
+            </TooltipTrigger>
+            <TooltipContent>Buyer Standard Commission + Extra Buyer Commission</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+      cell: ({ row }) => <p className='px-3 text-right'>{row.original.totalPercent} %</p>,
     },
   ]
 
@@ -623,8 +708,8 @@ function DraggableVerticalRow({
         transition: transition,
       }}
     >
-      <TableHead align={'left'} className={cn((header.id === 'package' || isTitle) && 'pl-9')}>
-        {header.id !== 'package' && !isTitle && <DragHandle attributes={attributes} listeners={listeners} />}
+      <TableHead align={'left'}>
+        {/*{header.id !== 'package' && !isTitle && <DragHandle attributes={attributes} listeners={listeners} />}*/}
         {flexRender(header.column.columnDef.header, header.getContext())}
       </TableHead>
       {table.getRowModel().rows.map((row) => {

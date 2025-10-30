@@ -51,120 +51,40 @@ import {
   ChevronsRightIcon,
   Columns2Icon,
   GripVerticalIcon,
-  InfoIcon,
-  PlusIcon,
 } from 'lucide-react'
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { cn } from '@/packages/utils/styles'
-import { useBuyerVoucher, type VoucherRow, useAgencyVoucher } from '@/providers/voucher.provider'
-import { capitalizeFirst } from '@/packages/utils/string'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useEventPercentage, type EventPercentage } from '@/providers/event.provider'
 
-export default function VoucherTemplate() {
-  const {
-    data: dataBuyerVoucher,
-    updateCell: updateCellBuyerVoucher,
-    addPackage: addPackageBuyerVoucher,
-  } = useBuyerVoucher()
-  const {
-    data: dataAgencyVoucher,
-    updateCell: updateCellAgencyVoucher,
-    addPackage: addPackageAgencyVoucher,
-  } = useAgencyVoucher()
-  const [tabValue, setTabValue] = React.useState<string>('buyer')
+export default function EventTemplate() {
+  const { events, updatePercent } = useEventPercentage()
+  const [tabValue, setTabValue] = React.useState<string>('event')
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
   })
   const sortableId = React.useId()
   const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}), useSensor(KeyboardSensor, {}))
 
-  const { data, updateCell, addPackage } = React.useMemo(() => {
-    if (tabValue === 'buyer') {
-      return {
-        data: dataBuyerVoucher,
-        updateCell: updateCellBuyerVoucher,
-        addPackage: addPackageBuyerVoucher,
-      }
-    }
-    return {
-      data: dataAgencyVoucher,
-      updateCell: updateCellAgencyVoucher,
-      addPackage: addPackageAgencyVoucher,
-    }
-  }, [
-    tabValue,
-    dataBuyerVoucher,
-    updateCellBuyerVoucher,
-    addPackageBuyerVoucher,
-    dataAgencyVoucher,
-    updateCellAgencyVoucher,
-    addPackageAgencyVoucher,
-  ])
-
-  const columns: ColumnDef<VoucherRow>[] = [
+  const columns: ColumnDef<EventPercentage>[] = [
     {
-      accessorKey: 'package',
-      header: `${capitalizeFirst(tabValue)} Voucher Package`,
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.package}</p>,
+      accessorKey: 'id',
+      header: `ID`,
+      cell: ({ row }) => <p className='px-3 text-right'>{row.original.id}</p>,
       enableHiding: false,
     },
     {
-      accessorKey: 'amountTBC',
-      header: `${capitalizeFirst(tabValue)} Voucher Amount`,
-      cell: ({ row }) => (
-        <form
-          className='flex justify-end'
-          onSubmit={(e) => {
-            e.preventDefault()
-
-            const input = e.currentTarget.querySelector('input')
-            const value = input?.value
-
-            if (!value) return
-
-            updateCell('voucherAmount', row.index, Number(value))
-
-            toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-              loading: `Saving ${row.original.package}`,
-              success: 'Done',
-              error: 'Error',
-            })
-          }}
-        >
-          <Label htmlFor={`${row.original.package}-buyer-commission-amount`} className='sr-only'>
-            Target
-          </Label>
-          <Input
-            className='hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent'
-            defaultValue={row.original.amountTBC}
-            id={`${row.original.package}-buyer-commission-amount`}
-          />
-        </form>
-      ),
-    },
-    {
-      accessorKey: 'valueUSD',
-      header: `${capitalizeFirst(tabValue)} Voucher Value`,
-      cell: ({ row }) => <p className='px-3 text-right'>{row.original.valueUSD}</p>,
+      accessorKey: 'name',
+      header: `Event`,
+      cell: ({ row }) => <p className='px-3 text-right'>{row.original.name}</p>,
     },
     {
       accessorKey: 'percent',
-      header: () => (
-        <div className='flex items-center gap-2'>
-          <p>{`Final ${capitalizeFirst(tabValue)} Voucher`}</p>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <InfoIcon size={12} />
-            </TooltipTrigger>
-            <TooltipContent>{`${capitalizeFirst(tabValue)} Voucher + Event ${capitalizeFirst(tabValue)} Voucher`}</TooltipContent>
-          </Tooltip>
-        </div>
-      ),
+      header: `Percent`,
       cell: ({ row }) => (
         <form
           className='flex items-center justify-end'
@@ -175,21 +95,22 @@ export default function VoucherTemplate() {
 
             if (!value) return
 
-            updateCell('voucherPercent', row.index, Number(value))
+            updatePercent(row.original.id, Number(value))
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-              loading: `Saving ${row.original.package}`,
+              loading: `Saving ${row.original.id}`,
               success: 'Done',
               error: 'Error',
             })
           }}
         >
-          <Label htmlFor={`${row.original.package}-final-buyer-commission`} className='sr-only'>
+          <Label htmlFor={`${row.original.id}-final-buyer-commission`} className='sr-only'>
             final-buyer-commission
           </Label>
           <Input
+            type='number'
             className='hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent'
-            defaultValue={row.original.finalPercent}
-            id={`${row.original.package}-final-buyer-commission`}
+            defaultValue={row.original.percent}
+            id={`${row.original.id}-final-buyer-commission`}
           />
           <p>%</p>
         </form>
@@ -197,8 +118,10 @@ export default function VoucherTemplate() {
     },
   ]
 
+  console.log('data', events)
+
   const table = useReactTable({
-    data,
+    data: events,
     columns,
     state: {
       sorting,
@@ -207,7 +130,7 @@ export default function VoucherTemplate() {
       columnFilters,
       pagination,
     },
-    getRowId: (row) => row.package.toString(),
+    getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -245,8 +168,6 @@ export default function VoucherTemplate() {
     })
   }
 
-  console.log('data', data)
-
   return (
     <Tabs value={tabValue} onValueChange={setTabValue} className='w-full flex-col justify-start gap-6'>
       <div className='flex items-center justify-between px-4 lg:px-6'>
@@ -258,13 +179,11 @@ export default function VoucherTemplate() {
             <SelectValue placeholder='Select a view' />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='buyer'>Buyer Voucher Package</SelectItem>
-            <SelectItem value='agency'>Agency Voucher Package</SelectItem>
+            <SelectItem value='event'>Event</SelectItem>
           </SelectContent>
         </Select>
         <TabsList className='**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex'>
-          <TabsTrigger value='buyer'>Buyer Voucher Package</TabsTrigger>
-          <TabsTrigger value='agency'>Agency Voucher Package</TabsTrigger>
+          <TabsTrigger value='event'>Event</TabsTrigger>
         </TabsList>
         <div className='flex items-center gap-2'>
           <DropdownMenu>
@@ -294,112 +213,9 @@ export default function VoucherTemplate() {
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant='outline' size='sm' onClick={addPackage}>
-            <PlusIcon />
-            <span className='hidden lg:inline'>Add Package</span>
-          </Button>
         </div>
       </div>
-      <TabsContent value='buyer' className='relative flex flex-col gap-4 overflow-auto px-4 lg:px-6'>
-        <div className='overflow-hidden rounded-lg border'>
-          <DndContext
-            collisionDetection={closestCenter}
-            modifiers={[restrictToVerticalAxis]}
-            onDragEnd={handleDragEnd}
-            sensors={sensors}
-            id={sortableId}
-          >
-            <Table>
-              <TableBody>
-                <SortableContext items={columnOrder} strategy={verticalListSortingStrategy}>
-                  {table
-                    .getHeaderGroups()
-                    .map((headerGroup) =>
-                      headerGroup.headers.map((header) => (
-                        <DraggableVerticalRow key={header.id} header={header} table={table} />
-                      ))
-                    )}
-                </SortableContext>
-              </TableBody>
-            </Table>
-          </DndContext>
-        </div>
-        <div className='flex items-center justify-between px-4'>
-          <div className='text-muted-foreground hidden flex-1 text-sm lg:flex'>
-            {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-            selected.
-          </div>
-          <div className='flex w-full items-center gap-8 lg:w-fit'>
-            <div className='hidden items-center gap-2 lg:flex'>
-              <Label htmlFor='rows-per-page' className='text-sm font-medium'>
-                Rows per page
-              </Label>
-              <Select
-                value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value))
-                }}
-              >
-                <SelectTrigger size='sm' className='w-20' id='rows-per-page'>
-                  <SelectValue placeholder={table.getState().pagination.pageSize} />
-                </SelectTrigger>
-                <SelectContent side='top'>
-                  {[5, 10, 15, 20, 25].map((pageSize) => (
-                    <SelectItem key={pageSize} value={`${pageSize}`}>
-                      {pageSize}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className='flex w-fit items-center justify-center text-sm font-medium'>
-              Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-            </div>
-            <div className='ml-auto flex items-center gap-2 lg:ml-0'>
-              <Button
-                variant='outline'
-                className='hidden h-8 w-8 p-0 lg:flex'
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className='sr-only'>Go to first page</span>
-                <ChevronsLeftIcon />
-              </Button>
-              <Button
-                variant='outline'
-                className='size-8'
-                size='icon'
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className='sr-only'>Go to previous page</span>
-                <ChevronLeftIcon />
-              </Button>
-              <Button
-                variant='outline'
-                className='size-8'
-                size='icon'
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className='sr-only'>Go to next page</span>
-                <ChevronRightIcon />
-              </Button>
-              <Button
-                variant='outline'
-                className='hidden size-8 lg:flex'
-                size='icon'
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className='sr-only'>Go to last page</span>
-                <ChevronsRightIcon />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </TabsContent>
-      <TabsContent value='agency' className='relative flex flex-col gap-4 overflow-auto px-4 lg:px-6'>
+      <TabsContent value='event' className='relative flex flex-col gap-4 overflow-auto px-4 lg:px-6'>
         <div className='overflow-hidden rounded-lg border'>
           <DndContext
             collisionDetection={closestCenter}
@@ -506,8 +322,8 @@ function DraggableVerticalRow({
   header,
   table,
 }: {
-  header: Header<VoucherRow, unknown>
-  table: ReactTable<VoucherRow>
+  header: Header<EventPercentage, unknown>
+  table: ReactTable<EventPercentage>
 }) {
   const { transform, transition, setNodeRef, isDragging, attributes, listeners } = useSortable({
     id: header.id,

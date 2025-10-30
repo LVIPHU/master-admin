@@ -29,7 +29,7 @@ export function proxy(request: NextRequest) {
   const token = request.cookies.get('token')?.value
   const isPublic = PUBLIC_PATHS.some((p) => pathname.includes(p))
 
-  // Lấy locale hiện tại (vd: /en/dashboard → locale=en)
+  // Lấy locale hiện tại (vd: /en/admin/dashboard → locale=en)
   const currentLocale = locales.find((l) => pathname.startsWith(`/${l}`)) || locales[0]
 
   if (!token && !isPublic) {
@@ -40,7 +40,7 @@ export function proxy(request: NextRequest) {
 
   if (token && isPublic) {
     // Nếu đã đăng nhập mà vào /sign-in → redirect về dashboard theo locale
-    const redirectUrl = new URL(`/${currentLocale}/dashboard`, request.url)
+    const redirectUrl = new URL(`/${currentLocale}/admin/dashboard`, request.url)
     return NextResponse.redirect(redirectUrl)
   }
 }

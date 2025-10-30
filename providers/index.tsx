@@ -5,6 +5,7 @@ import ThemeProvider from '@/providers/theme.provider'
 import LocaleProvider from '@/providers/locale.provider'
 import { BuyerCommissionProvider } from '@/providers/buyer-commission.provider'
 import { BuyerVoucherProvider, AgencyVoucherProvider } from '@/providers/voucher.provider'
+import { EventPercentageProvider } from '@/providers/event.provider'
 
 export default async function ProviderRegistry({ children, params }: Readonly<PropsWithChildren<PageLangParam>>) {
   const lang = (await params).lang
@@ -12,11 +13,13 @@ export default async function ProviderRegistry({ children, params }: Readonly<Pr
   return (
     <LocaleProvider initialLocale={lang} initialMessages={allMessages[lang]!}>
       <ThemeProvider attribute='class' defaultTheme='light' enableColorScheme enableSystem disableTransitionOnChange>
-        <BuyerCommissionProvider>
-          <AgencyVoucherProvider>
-            <BuyerVoucherProvider>{children}</BuyerVoucherProvider>
-          </AgencyVoucherProvider>
-        </BuyerCommissionProvider>
+        <EventPercentageProvider>
+          <BuyerCommissionProvider>
+            <AgencyVoucherProvider>
+              <BuyerVoucherProvider>{children}</BuyerVoucherProvider>
+            </AgencyVoucherProvider>
+          </BuyerCommissionProvider>
+        </EventPercentageProvider>
       </ThemeProvider>
     </LocaleProvider>
   )

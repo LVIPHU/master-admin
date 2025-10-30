@@ -7,5 +7,5 @@ export default async function RootPage() {
   const token = cookieStore.get('token')?.value
   const locale = linguiConfig.locales[0] || 'en'
 
-  redirect(`/${locale}${token ? '/dashboard' : '/sign-in'}`)
+  redirect(`/${locale}${token ? '/admin/dashboard' : '/sign-in'}`)
 }

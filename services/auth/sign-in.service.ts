@@ -14,5 +14,5 @@ export async function signIn(data: SignInDto) {
     maxAge: 60 * 60 * 24 * 7,
   })
   const locale = linguiConfig.locales[0] || 'en'
-  redirect(`/${locale}/dashboard`)
+  redirect(`/${locale}/admin/dashboard`)
 }

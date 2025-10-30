@@ -1,6 +1,7 @@
 'use client'
 
-import React, { createContext, useContext, useState, useMemo, useCallback } from 'react'
+import React, { createContext, useContext, useState, useMemo, useCallback, useEffect } from 'react'
+import { useEventPercentage } from '@/providers/event.provider'
 
 // ========================
 // TYPES
@@ -28,7 +29,6 @@ export interface BuyerCommissionContextValue {
   buyerCommissionAmount: number[]
   buyerStandardCommissionPercent: number[]
   packageDiscountPercent: number[]
-  eventBuyerCommission: number
   data: BuyerCommissionRow[]
   updateCell: (section: string, index: number, newValue: number) => void
   addPackage: () => void
@@ -43,17 +43,59 @@ const BuyerCommissionContext = createContext<BuyerCommissionContextValue | null>
 
 export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // === STATE ===
-  const [tbcPrice, setTbcPrice] = useState(4)
-  const [buyerCommissionAmount, setBuyerCommissionAmount] = useState([100, 200, 300, 400, 500])
-  const [buyerStandardCommissionPercent, setBuyerStandardCommissionPercent] = useState([1, 2, 3, 4, 5])
-  const [packageDiscountPercent, setPackageDiscountPercent] = useState([0, 4, 9, 16, 25])
-  const [eventBuyerCommission, setEventBuyerCommission] = useState(0)
+  const { getEvent } = useEventPercentage()
+  const [tbcPrice, setTbcPrice] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('tbcPrice')
+      if (saved) return JSON.parse(saved)
+    }
+    return 4
+  })
+  const [buyerCommissionAmount, setBuyerCommissionAmount] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('buyerCommissionAmount')
+      if (saved) return JSON.parse(saved)
+    }
+    return [100, 200, 300, 400, 500]
+  })
+  const [buyerStandardCommissionPercent, setBuyerStandardCommissionPercent] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('buyerStandardCommissionPercent')
+      if (saved) return JSON.parse(saved)
+    }
+    return [1, 2, 3, 4, 5]
+  })
+  const [packageDiscountPercent, setPackageDiscountPercent] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('packageDiscountPercent')
+      if (saved) return JSON.parse(saved)
+    }
+    return [0, 4, 9, 16, 25]
+  })
+
+  useEffect(() => {
+    localStorage.setItem('tbcPrice', JSON.stringify(tbcPrice))
+  }, [tbcPrice])
+
+  useEffect(() => {
+    localStorage.setItem('buyerCommissionAmount', JSON.stringify(buyerCommissionAmount))
+  }, [buyerCommissionAmount])
+
+  useEffect(() => {
+    localStorage.setItem('buyerStandardCommissionPercent', JSON.stringify(buyerStandardCommissionPercent))
+  }, [buyerStandardCommissionPercent])
+
+  useEffect(() => {
+    localStorage.setItem('packageDiscountPercent', JSON.stringify(packageDiscountPercent))
+  }, [packageDiscountPercent])
 
   // === LOGIC CALCULATE ===
-  const calculateBuyerCommission = useCallback((): BuyerCommissionRow[] => {
-    const buyerCommissionPackages = buyerCommissionAmount.map((_, i) => i + 1)
+  const eventBuyerCommissionPercent = useMemo(() => getEvent('buyerCommission')?.percent ?? 0, [getEvent])
 
-    return buyerCommissionPackages.map((pkg, i) => {
+  const calculateBuyerCommission = useCallback((): BuyerCommissionRow[] => {
+    const buyerCommissionPackages = buyerCommissionAmount.map((_: never, i: never) => i + 1)
+
+    return buyerCommissionPackages.map((pkg: never, i: never) => {
       const amountTBC = buyerCommissionAmount[i] ?? 0
       const valueUSD = amountTBC * tbcPrice
 
@@ -70,8 +112,8 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
       const totalPercent = standardPercent + extraPercent
       const totalValueUSD = standardValueUSD + discountValueUSD
 
-      const finalPercent = totalPercent + eventBuyerCommission
-      const finalValueUSD = totalValueUSD * (1 + eventBuyerCommission / 100)
+      const finalPercent = totalPercent + eventBuyerCommissionPercent
+      const finalValueUSD = totalValueUSD * (1 + eventBuyerCommissionPercent / 100)
 
       return {
         package: pkg,
@@ -91,7 +133,13 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
         finalValueUSD,
       }
     })
-  }, [tbcPrice, buyerCommissionAmount, buyerStandardCommissionPercent, packageDiscountPercent, eventBuyerCommission])
+  }, [
+    tbcPrice,
+    buyerCommissionAmount,
+    buyerStandardCommissionPercent,
+    packageDiscountPercent,
+    eventBuyerCommissionPercent,
+  ])
 
   const data = useMemo(() => calculateBuyerCommission(), [calculateBuyerCommission])
 
@@ -99,24 +147,24 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
   const updateCell = useCallback((section: string, index: number, newValue: number) => {
     const value = parseFloat(String(newValue)) || 0
     if (section === 'buyerCommissionAmount')
-      setBuyerCommissionAmount((prev) => prev.map((v, i) => (i === index ? value : v)))
+      setBuyerCommissionAmount((prev: never[]) => prev.map((v, i) => (i === index ? value : v)))
     if (section === 'buyerStandardCommissionPercent')
-      setBuyerStandardCommissionPercent((prev) => prev.map((v, i) => (i === index ? value : v)))
+      setBuyerStandardCommissionPercent((prev: never[]) => prev.map((v, i) => (i === index ? value : v)))
     if (section === 'packageDiscountPercent')
-      setPackageDiscountPercent((prev) => prev.map((v, i) => (i === index ? value : v)))
+      setPackageDiscountPercent((prev: never[]) => prev.map((v, i) => (i === index ? value : v)))
   }, [])
 
   // === ADD / REMOVE ROW ===
   const addPackage = useCallback(() => {
-    setBuyerCommissionAmount((prev) => [...prev, 0])
-    setBuyerStandardCommissionPercent((prev) => [...prev, 0])
-    setPackageDiscountPercent((prev) => [...prev, 0])
+    setBuyerCommissionAmount((prev: never[]) => [...prev, 0])
+    setBuyerStandardCommissionPercent((prev: never[]) => [...prev, 0])
+    setPackageDiscountPercent((prev: never[]) => [...prev, 0])
   }, [])
 
   const removePackage = useCallback((index: number) => {
-    setBuyerCommissionAmount((prev) => prev.filter((_, i) => i !== index))
-    setBuyerStandardCommissionPercent((prev) => prev.filter((_, i) => i !== index))
-    setPackageDiscountPercent((prev) => prev.filter((_, i) => i !== index))
+    setBuyerCommissionAmount((prev: never[]) => prev.filter((_, i) => i !== index))
+    setBuyerStandardCommissionPercent((prev: never[]) => prev.filter((_, i) => i !== index))
+    setPackageDiscountPercent((prev: never[]) => prev.filter((_, i) => i !== index))
   }, [])
 
   // === CONTEXT VALUE ===
@@ -125,7 +173,6 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
     buyerCommissionAmount,
     buyerStandardCommissionPercent,
     packageDiscountPercent,
-    eventBuyerCommission,
     data,
     updateCell,
     addPackage,

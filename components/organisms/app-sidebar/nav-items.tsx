@@ -87,20 +87,25 @@ export default function NavItems({
   }
   return (
     <>
-      {items.map((item) => (
-        <DropdownMenu key={item.title}>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton tooltip={item.title}>{item.icon && <item.icon />}</SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side='right' align='start'>
-            {item.items?.map((subItem) => (
-              <DropdownMenuItem key={subItem.title} asChild>
-                <a href={subItem.url}>{subItem.title}</a>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ))}
+      {items.map((item) => {
+        if (!item.items) {
+          return Item(item)
+        }
+        return (
+          <DropdownMenu key={item.title}>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton tooltip={item.title}>{item.icon && <item.icon />}</SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side='right' align='start'>
+              {item.items?.map((subItem) => (
+                <DropdownMenuItem key={subItem.title} asChild>
+                  <a href={subItem.url}>{subItem.title}</a>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      })}
     </>
   )
 }

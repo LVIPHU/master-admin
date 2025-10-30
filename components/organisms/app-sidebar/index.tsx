@@ -177,11 +177,11 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className='mt-auto' />
+        {/*<NavProjects projects={data.projects} />*/}
+        {/*<NavSecondary items={data.navSecondary} className='mt-auto' />*/}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {/*<NavUser user={data.user} />*/}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

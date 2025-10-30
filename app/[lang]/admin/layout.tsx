@@ -46,7 +46,6 @@ export default function AdminLayout({ children }: Readonly<PropsWithChildren>) {
                 defaultValue={tbcPrice}
                 id={`tbc-price`}
               />
-              <Button type='submit'>Save</Button>
             </form>
             <div className='flex flex-col gap-4 py-4 md:gap-6 md:py-6'>{children}</div>
           </div>

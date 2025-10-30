@@ -32,7 +32,7 @@ export interface BuyerCommissionContextValue {
   data: BuyerCommissionRow[]
   updateCell: (section: string, index: number, newValue: number) => void
   addPackage: () => void
-  removePackage: (index: number) => void
+  removePackage: (index?: number) => void
   setTbcPrice: (price: number) => void
 }
 
@@ -167,11 +167,16 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
     })
   }, [])
 
-  const removePackage = useCallback((index: number) => {
-    setBuyerCommissionAmount((prev: never[]) => prev.filter((_, i) => i !== index))
-    setBuyerStandardCommissionPercent((prev: never[]) => prev.filter((_, i) => i !== index))
-    setPackageDiscountPercent((prev: never[]) => prev.filter((_, i) => i !== index))
+  const removePackage = useCallback((index?: number) => {
+    setBuyerCommissionAmount((prev: never[]) => {
+      const idx = index ?? prev.length - 1
+      const newAmount = prev.filter((_, i) => i !== idx)
+      setBuyerStandardCommissionPercent((prev2: never[]) => prev2.filter((_, i) => i !== idx))
+      setPackageDiscountPercent((prev3: never[]) => prev3.filter((_, i) => i !== idx))
+      return newAmount
+    })
   }, [])
+  console.log('removePackage', buyerCommissionAmount, buyerStandardCommissionPercent, packageDiscountPercent)
 
   // === CONTEXT VALUE ===
   const value: BuyerCommissionContextValue = {

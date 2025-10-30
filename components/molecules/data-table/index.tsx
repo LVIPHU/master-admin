@@ -75,7 +75,7 @@ import {
   EllipsisIcon,
   GripVerticalIcon,
   InfoIcon,
-  LoaderIcon,
+  MinusIcon,
   PlusIcon,
   TrendingUpIcon,
 } from 'lucide-react'
@@ -85,7 +85,7 @@ import { BuyerCommissionRow, useBuyerCommission } from '@/providers/buyer-commis
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 export function DataTable() {
-  const { data, updateCell, addPackage } = useBuyerCommission()
+  const { data, updateCell, addPackage, removePackage } = useBuyerCommission()
   const [tabValue, setTabValue] = React.useState<string>('package')
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -534,6 +534,10 @@ export function DataTable() {
           <Button variant='outline' size='sm' onClick={addPackage}>
             <PlusIcon />
             <span className='hidden lg:inline'>Add Package</span>
+          </Button>
+          <Button variant='outline' size='sm' onClick={()=>removePackage(data.length - 1)}>
+            <MinusIcon />
+            <span className='hidden lg:inline'>Remove Package</span>
           </Button>
         </div>
       </div>

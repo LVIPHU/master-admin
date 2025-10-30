@@ -51,7 +51,7 @@ import {
   ChevronsRightIcon,
   Columns2Icon,
   GripVerticalIcon,
-  InfoIcon,
+  InfoIcon, MinusIcon,
   PlusIcon,
 } from 'lucide-react'
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
@@ -65,11 +65,13 @@ export default function VoucherTemplate() {
     data: dataBuyerVoucher,
     updateCell: updateCellBuyerVoucher,
     addPackage: addPackageBuyerVoucher,
+    removePackage: removePackageBuyerVoucher,
   } = useBuyerVoucher()
   const {
     data: dataAgencyVoucher,
     updateCell: updateCellAgencyVoucher,
     addPackage: addPackageAgencyVoucher,
+    removePackage: removePackageAgencyVoucher,
   } = useAgencyVoucher()
   const [tabValue, setTabValue] = React.useState<string>('buyer')
   const [rowSelection, setRowSelection] = React.useState({})
@@ -83,18 +85,20 @@ export default function VoucherTemplate() {
   const sortableId = React.useId()
   const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}), useSensor(KeyboardSensor, {}))
 
-  const { data, updateCell, addPackage } = React.useMemo(() => {
+  const { data, updateCell, addPackage, removePackage } = React.useMemo(() => {
     if (tabValue === 'buyer') {
       return {
         data: dataBuyerVoucher,
         updateCell: updateCellBuyerVoucher,
         addPackage: addPackageBuyerVoucher,
+        removePackage: removePackageBuyerVoucher,
       }
     }
     return {
       data: dataAgencyVoucher,
       updateCell: updateCellAgencyVoucher,
       addPackage: addPackageAgencyVoucher,
+      removePackage: removePackageAgencyVoucher,
     }
   }, [
     tabValue,
@@ -104,6 +108,8 @@ export default function VoucherTemplate() {
     dataAgencyVoucher,
     updateCellAgencyVoucher,
     addPackageAgencyVoucher,
+    removePackageBuyerVoucher,
+    restrictToVerticalAxis,
   ])
 
   const columns: ColumnDef<VoucherRow>[] = [
@@ -306,6 +312,10 @@ export default function VoucherTemplate() {
           <Button variant='outline' size='sm' onClick={addPackage}>
             <PlusIcon />
             <span className='hidden lg:inline'>Add Package</span>
+          </Button>
+          <Button variant='outline' size='sm' onClick={removePackage}>
+            <MinusIcon />
+            <span className='hidden lg:inline'>Remove Package</span>
           </Button>
         </div>
       </div>

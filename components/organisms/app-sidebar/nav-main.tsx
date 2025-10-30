@@ -31,7 +31,7 @@ export default function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>Presale</SidebarGroupLabel>
       <SidebarMenu>
         <NavItems items={items} />
       </SidebarMenu>

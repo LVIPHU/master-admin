@@ -19,7 +19,7 @@ interface VoucherContextValue {
   data: VoucherRow[]
   updateCell: (section: string, index: number, newValue: number) => void
   addPackage: () => void
-  removePackage: (index: number) => void
+  removePackage: () => void
 }
 
 function createVoucherContext(name: string) {

@@ -10,6 +10,7 @@ import {
   SettingsIcon,
   SquareTerminal,
   BadgeDollarSign,
+  Lock,
 } from 'lucide-react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 import NavMain from './nav-main'
@@ -65,6 +66,12 @@ const data = {
       title: 'Users',
       url: '/admin/users',
       icon: Users,
+      isActive: false,
+    },
+    {
+      title: 'Lock And Unlock',
+      url: '/admin/presale',
+      icon: Lock,
       isActive: false,
     },
     // {
@@ -180,9 +187,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
         {/*<NavProjects projects={data.projects} />*/}
         {/*<NavSecondary items={data.navSecondary} className='mt-auto' />*/}
       </SidebarContent>
-      <SidebarFooter>
-        {/*<NavUser user={data.user} />*/}
-      </SidebarFooter>
+      <SidebarFooter>{/*<NavUser user={data.user} />*/}</SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

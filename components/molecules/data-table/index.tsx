@@ -101,16 +101,18 @@ export function DataTable() {
   const columnsCommission: ColumnDef<BuyerCommissionRow>[] = [
     {
       accessorKey: 'package',
+      id: 'Buyer Commission Package',
       header: 'Buyer Commission Package',
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.package}</p>,
       enableHiding: false,
     },
     {
       accessorKey: 'amountTBC',
+      id: 'Buyer Commission Amount (TBC)',
       header: 'Buyer Commission Amount (TBC)',
       cell: ({ row }) => (
         <form
-          className='flex items-center justify-end'
+          className='flex items-center justify-end bg-green-200'
           onSubmit={(e) => {
             e.preventDefault()
 
@@ -141,6 +143,7 @@ export function DataTable() {
     },
     {
       accessorKey: 'valueUSD',
+      id: 'Buyer Commission Value',
       header: () => (
         <div className='flex items-center gap-2'>
           <p>Buyer Commission Value</p>
@@ -165,6 +168,7 @@ export function DataTable() {
     },
     {
       accessorKey: 'finalPercent',
+      id: 'Final Buyer Commission',
       header: () => (
         <div className='flex items-center gap-2'>
           <p>Final Buyer Commission</p>
@@ -178,7 +182,7 @@ export function DataTable() {
       ),
       cell: ({ row }) => (
         <form
-          className='flex items-center justify-end'
+          className='flex items-center justify-end bg-green-200'
           onSubmit={(e) => {
             e.preventDefault()
             toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
@@ -212,16 +216,18 @@ export function DataTable() {
     },
     {
       accessorKey: 'package',
+      id: 'Buyer Commission Package',
       header: 'Buyer Commission Package',
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.package}</p>,
       enableHiding: false,
     },
     {
       accessorKey: 'standardPercent',
+      id: 'Buyer Standard Commission',
       header: 'Buyer Standard Commission',
       cell: ({ row }) => (
         <form
-          className='flex items-center justify-end'
+          className='flex items-center justify-end bg-green-200'
           onSubmit={(e) => {
             e.preventDefault()
             const input = e.currentTarget.querySelector('input')
@@ -251,11 +257,13 @@ export function DataTable() {
     },
     {
       accessorKey: 'standardAmountTBC',
+      id: 'Buyer Standard Commission Amount (TBC)',
       header: 'Buyer Standard Commission Amount (TBC)',
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.standardAmountTBC}</p>,
     },
     {
       accessorKey: 'standardValueUSD',
+      id: 'Buyer Standard Commission Value',
       header: () => (
         <div className='flex items-center gap-2'>
           <p>Buyer Standard Commission Value</p>
@@ -287,10 +295,11 @@ export function DataTable() {
     },
     {
       accessorKey: 'discountPercent',
+      id: 'Package 1 Discount',
       header: 'Package 1 Discount',
       cell: ({ row }) => (
         <form
-          className='flex items-center justify-end'
+          className='flex items-center justify-end bg-green-200'
           onSubmit={(e) => {
             e.preventDefault()
             const input = e.currentTarget.querySelector('input')
@@ -320,11 +329,13 @@ export function DataTable() {
     },
     {
       accessorKey: 'discountAmountTBC',
+      id: 'Package 1 Discount Amount (TBC)',
       header: 'Package 1 Discount Amount (TBC)',
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.discountAmountTBC}</p>,
     },
     {
       accessorKey: 'discountValueUSD',
+      id: 'Package 1 Discount Value',
       header: () => (
         <div className='flex items-center gap-2'>
           <p>Package 1 Discount Value</p>
@@ -349,6 +360,7 @@ export function DataTable() {
     },
     {
       accessorKey: 'discountValuePerPackage',
+      id: 'Package 1 Discount Value per Package',
       header: () => (
         <div className='flex items-center gap-2'>
           <p>Package 1 Discount Value per Package</p>
@@ -373,6 +385,7 @@ export function DataTable() {
     },
     {
       accessorKey: 'extraPercent',
+      id: 'Extra Buyer Commission',
       header: () => (
         <div className='flex items-center gap-2'>
           <p>Extra Buyer Commission</p>
@@ -395,6 +408,7 @@ export function DataTable() {
     },
     {
       accessorKey: 'totalValueUSD',
+      id: 'Total Buyer Commission Value',
       header: () => (
         <div className='flex items-center gap-2'>
           <p>Total Buyer Commission Value</p>
@@ -419,6 +433,7 @@ export function DataTable() {
     },
     {
       accessorKey: 'totalPercent',
+      id: 'Total Buyer Commission',
       header: () => (
         <div className='flex items-center gap-2'>
           <p>Total Buyer Commission</p>
@@ -496,12 +511,12 @@ export function DataTable() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value='package'>Buyer Commission Package</SelectItem>
-            <SelectItem value='standard'>Buyer Standard Commission</SelectItem>
+            <SelectItem value='standard'>How to Calculate !</SelectItem>
           </SelectContent>
         </Select>
         <TabsList className='**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex'>
           <TabsTrigger value='package'>Buyer Commission Package</TabsTrigger>
-          <TabsTrigger value='standard'>Buyer Standard Commission</TabsTrigger>
+          <TabsTrigger value='standard'>How to Calculate !</TabsTrigger>
         </TabsList>
         <div className='flex items-center gap-2'>
           <DropdownMenu>
@@ -535,7 +550,7 @@ export function DataTable() {
             <PlusIcon />
             <span className='hidden lg:inline'>Add Package</span>
           </Button>
-          <Button variant='outline' size='sm' onClick={()=>removePackage(data.length - 1)}>
+          <Button variant='outline' size='sm' onClick={() => removePackage(data.length - 1)}>
             <MinusIcon />
             <span className='hidden lg:inline'>Remove Package</span>
           </Button>

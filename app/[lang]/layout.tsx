@@ -27,7 +27,7 @@ export async function generateMetadata(props: PageLangParam): Promise<Metadata> 
   const i18n = getI18nInstance((await props.params).lang)
 
   return {
-    title: i18n._(msg`Translation Demo`),
+    title: i18n._(msg`TBC Admin`),
   }
 }
 

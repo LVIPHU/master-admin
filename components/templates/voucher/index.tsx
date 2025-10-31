@@ -51,7 +51,8 @@ import {
   ChevronsRightIcon,
   Columns2Icon,
   GripVerticalIcon,
-  InfoIcon, MinusIcon,
+  InfoIcon,
+  MinusIcon,
   PlusIcon,
 } from 'lucide-react'
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
@@ -115,16 +116,18 @@ export default function VoucherTemplate() {
   const columns: ColumnDef<VoucherRow>[] = [
     {
       accessorKey: 'package',
+      id: `${capitalizeFirst(tabValue)} Voucher Package`,
       header: `${capitalizeFirst(tabValue)} Voucher Package`,
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.package}</p>,
       enableHiding: false,
     },
     {
       accessorKey: 'amountTBC',
+      id: `${capitalizeFirst(tabValue)} Voucher Amount`,
       header: `${capitalizeFirst(tabValue)} Voucher Amount`,
       cell: ({ row }) => (
         <form
-          className='flex justify-end'
+          className='flex justify-end bg-green-200'
           onSubmit={(e) => {
             e.preventDefault()
 
@@ -155,6 +158,7 @@ export default function VoucherTemplate() {
     },
     {
       accessorKey: 'valueUSD',
+      id: `${capitalizeFirst(tabValue)} Voucher Value`,
       header: `${capitalizeFirst(tabValue)} Voucher Value`,
       cell: ({ row }) => (
         <p className='px-3 text-right'>
@@ -169,6 +173,7 @@ export default function VoucherTemplate() {
     },
     {
       accessorKey: 'percent',
+      id: `Final ${capitalizeFirst(tabValue)} Voucher`,
       header: () => (
         <div className='flex items-center gap-2'>
           <p>{`Final ${capitalizeFirst(tabValue)} Voucher`}</p>
@@ -182,7 +187,7 @@ export default function VoucherTemplate() {
       ),
       cell: ({ row }) => (
         <form
-          className='flex items-center justify-end'
+          className='flex items-center justify-end bg-green-200'
           onSubmit={(e) => {
             e.preventDefault()
             const input = e.currentTarget.querySelector('input')

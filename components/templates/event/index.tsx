@@ -111,7 +111,7 @@ export default function EventTemplate() {
       header: () => <p className='text-right'>Percent</p>,
       cell: ({ row }) => (
         <form
-          className='flex items-center justify-end'
+          className='flex items-center justify-end bg-green-200'
           onSubmit={(e) => {
             e.preventDefault()
             const input = e.currentTarget.querySelector('input')

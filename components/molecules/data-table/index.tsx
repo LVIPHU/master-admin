@@ -50,10 +50,15 @@ export function DataTable() {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const [expanded, setExpanded] = React.useState<boolean>(false)
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 5,
   })
+
+  const handleExpanded = () => {
+    setExpanded((prev) => !prev)
+  }
 
   const columnsCommission: ColumnDef<BuyerCommissionRow>[] = [
     {
@@ -138,32 +143,28 @@ export function DataTable() {
         </div>
       ),
       cell: ({ row }) => (
-        <form
-          className='flex items-center justify-end bg-green-200'
-          onSubmit={(e) => {
-            e.preventDefault()
-            toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-              loading: `Saving ${row.original.package}`,
-              success: 'Done',
-              error: 'Error',
-            })
-          }}
-        >
-          <Label htmlFor={`${row.original.package}-final-buyer-commission`} className='sr-only'>
-            final-buyer-commission
-          </Label>
-          <Input
-            className='hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent'
-            defaultValue={row.original.finalPercent}
-            id={`${row.original.package}-final-buyer-commission`}
-          />
-          <p>%</p>
-        </form>
+        <p className='text-right'>{row.original.finalPercent} %</p>
       ),
     },
     {
       id: 'title_0',
-      header: 'Buyer Standard Commision',
+      header: () => (
+        <div className='flex w-full flex-row items-center justify-between'>
+          <p>How To Calculate!</p>
+          <Button variant='ghost' size='icon' onClick={handleExpanded}>
+            <ChevronDownIcon
+              className={cn('transition-transform duration-300 ease-in-out', expanded && 'rotate-180')}
+            />
+          </Button>
+        </div>
+      ),
+      cell: () => {
+        return null
+      },
+    },
+    {
+      id: 'title_1',
+      header: 'Buyer Standard Commission',
       cell: () => {
         return null
       },
@@ -241,7 +242,7 @@ export function DataTable() {
       ),
     },
     {
-      id: 'title_1',
+      id: 'title_2',
       header: 'Extra Buyer Commission',
       cell: () => {
         return null
@@ -354,7 +355,7 @@ export function DataTable() {
       cell: ({ row }) => <p className='px-3 text-right'>{row.original.extraPercent} %</p>,
     },
     {
-      id: 'title_2',
+      id: 'title_3',
       header: 'Total Buyer Commission',
       cell: () => {
         return null
@@ -478,7 +479,7 @@ export function DataTable() {
                 .getHeaderGroups()
                 .map((headerGroup) =>
                   headerGroup.headers
-                    .slice(0, 4)
+                    .slice(0, expanded ? headerGroup.headers.length : 5)
                     .map((header) => <DraggableVerticalRow key={header.id} header={header} table={table} />)
                 )}
             </TableBody>
@@ -486,19 +487,6 @@ export function DataTable() {
         </div>
       </div>
       <div className='relative flex flex-col gap-4 overflow-auto px-4 lg:px-6'>
-        <div className='overflow-hidden rounded-lg border'>
-          <Table>
-            <TableBody>
-              {table
-                .getHeaderGroups()
-                .map((headerGroup) =>
-                  headerGroup.headers
-                    .slice(4, headerGroup.headers.length)
-                    .map((header) => <DraggableVerticalRow key={header.id} header={header} table={table} />)
-                )}
-            </TableBody>
-          </Table>
-        </div>
         <div className='flex items-center justify-between px-4'>
           <div className='text-muted-foreground hidden flex-1 text-sm lg:flex'>
             {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
@@ -594,13 +582,18 @@ function DraggableVerticalRow({
         'relative z-0 data-[dragging=true]:z-10 data-[dragging=true]:opacity-80'
       )}
     >
-      <TableHead align={'left'}>{flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
-      {table.getRowModel().rows.map((row) => {
-        const cell = row.getVisibleCells().find((c) => c.column.id === header.column.id)
-        return (
-          <TableCell key={row.id}>{cell ? flexRender(cell.column.columnDef.cell, cell.getContext()) : null}</TableCell>
-        )
-      })}
+      <TableHead colSpan={isTitle ? table.getRowModel().rows.length + 1 : 0} align={'left'}>
+        {flexRender(header.column.columnDef.header, header.getContext())}
+      </TableHead>
+      {!isTitle &&
+        table.getRowModel().rows.map((row) => {
+          const cell = row.getVisibleCells().find((c) => c.column.id === header.column.id)
+          return (
+            <TableCell key={row.id}>
+              {cell ? flexRender(cell.column.columnDef.cell, cell.getContext()) : null}
+            </TableCell>
+          )
+        })}
     </TableRow>
   )
 }

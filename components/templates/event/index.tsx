@@ -142,8 +142,6 @@ export default function EventTemplate() {
     },
   ]
 
-  console.log('data', events)
-
   const table = useReactTable({
     data: events,
     columns,
@@ -169,63 +167,10 @@ export default function EventTemplate() {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
-  // function handleDragEnd(event: DragEndEvent) {
-  //   const { active, over } = event
-  //   if (active && over && active.id !== over.id) {
-  //     setData((data) => {
-  //       const oldIndex = dataIds.indexOf(active.id)
-  //       const newIndex = dataIds.indexOf(over.id)
-  //       return arrayMove(data, oldIndex, newIndex)
-  //     })
-  //   }
-  // }
-
   return (
     <Tabs value={tabValue} onValueChange={setTabValue} className='w-full flex-col justify-start gap-6'>
       <div className='flex items-center justify-between px-4 lg:px-6'>
-        <Label htmlFor='view-selector' className='sr-only'>
-          View
-        </Label>
-        <Select value={tabValue} onValueChange={setTabValue}>
-          <SelectTrigger className='flex w-fit @4xl/main:hidden' size='sm' id='view-selector'>
-            <SelectValue placeholder='Select a view' />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value='event'>Event</SelectItem>
-          </SelectContent>
-        </Select>
-        <TabsList className='**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex'>
-          <TabsTrigger value='event'>Event</TabsTrigger>
-        </TabsList>
-        {/*<div className='flex items-center gap-2'>*/}
-        {/*  <DropdownMenu>*/}
-        {/*    <DropdownMenuTrigger asChild>*/}
-        {/*      <Button variant='outline' size='sm'>*/}
-        {/*        <Columns2Icon />*/}
-        {/*        <span className='hidden lg:inline'>Customize Columns</span>*/}
-        {/*        <span className='lg:hidden'>Columns</span>*/}
-        {/*        <ChevronDownIcon />*/}
-        {/*      </Button>*/}
-        {/*    </DropdownMenuTrigger>*/}
-        {/*    <DropdownMenuContent align='end' className='w-56'>*/}
-        {/*      {table*/}
-        {/*        .getAllColumns()*/}
-        {/*        .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())*/}
-        {/*        .map((column) => {*/}
-        {/*          return (*/}
-        {/*            <DropdownMenuCheckboxItem*/}
-        {/*              key={column.id}*/}
-        {/*              className='capitalize'*/}
-        {/*              checked={column.getIsVisible()}*/}
-        {/*              onCheckedChange={(value) => column.toggleVisibility(!!value)}*/}
-        {/*            >*/}
-        {/*              {column.id}*/}
-        {/*            </DropdownMenuCheckboxItem>*/}
-        {/*          )*/}
-        {/*        })}*/}
-        {/*    </DropdownMenuContent>*/}
-        {/*  </DropdownMenu>*/}
-        {/*</div>*/}
+        <h1 className='text-xl font-semibold'>Event</h1>
       </div>
       <TabsContent value='event' className='relative flex flex-col gap-4 overflow-auto px-4 lg:px-6'>
         <div className='max-w-lg overflow-hidden rounded-lg border'>

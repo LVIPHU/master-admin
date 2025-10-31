@@ -18,6 +18,7 @@ import NavProjects from './nav-projects'
 import NavUser from './nav-user'
 import TeamSwitcher from './team-switcher'
 import { NavSecondary } from '@/components/organisms/app-sidebar/nav-secondary'
+import LogoSVG from '@/public/assets/logo.svg'
 
 // This is sample data.
 const data = {
@@ -29,8 +30,8 @@ const data = {
   teams: [
     {
       name: 'TBC Admin',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
+      logo: LogoSVG as React.FC<React.SVGProps<SVGSVGElement>>,
+      plan: '',
     },
     // {
     //   name: 'TBC Admin',

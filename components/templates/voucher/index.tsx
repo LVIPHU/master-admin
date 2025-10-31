@@ -270,12 +270,9 @@ export default function VoucherTemplate() {
 
       const newOrder = arrayMove(prev, oldIndex, newIndex)
       table.setColumnOrder(newOrder)
-      console.log('order', newOrder)
       return newOrder
     })
   }
-
-  console.log('data', data)
 
   return (
     <Tabs value={tabValue} onValueChange={setTabValue} className='w-full flex-col justify-start gap-6'>

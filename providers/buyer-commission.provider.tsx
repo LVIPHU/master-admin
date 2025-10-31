@@ -143,8 +143,6 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
 
   const data = useMemo(() => calculateBuyerCommission(), [calculateBuyerCommission])
 
-  console.log('data', data)
-
   // === UPDATE CELL ===
   const updateCell = useCallback((section: string, index: number, newValue: number) => {
     const value = parseFloat(String(newValue)) || 0
@@ -176,7 +174,6 @@ export const BuyerCommissionProvider: React.FC<{ children: React.ReactNode }> = 
       return newAmount
     })
   }, [])
-  console.log('removePackage', buyerCommissionAmount, buyerStandardCommissionPercent, packageDiscountPercent)
 
   // === CONTEXT VALUE ===
   const value: BuyerCommissionContextValue = {

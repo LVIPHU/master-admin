@@ -19,7 +19,7 @@ export default function TeamSwitcher({
 }: {
   teams: {
     name: string
-    logo: React.ElementType
+    logo: React.FC<React.SVGProps<SVGSVGElement>>
     plan: string
   }[]
 }) {
@@ -39,12 +39,12 @@ export default function TeamSwitcher({
               size='lg'
               className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
             >
-              <div className='bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
-                <activeTeam.logo className='size-4' />
+              <div className='text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg'>
+                <activeTeam.logo className='size-6' />
               </div>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-medium'>{activeTeam.name}</span>
-                {/*<span className='truncate text-xs'>{activeTeam.plan}</span>*/}
+                <span className='truncate text-xs'>{activeTeam.plan}</span>
               </div>
               <ChevronsUpDown className='ml-auto' />
             </SidebarMenuButton>
@@ -58,8 +58,8 @@ export default function TeamSwitcher({
             <DropdownMenuLabel className='text-muted-foreground text-xs'>Teams</DropdownMenuLabel>
             {teams.map((team, index) => (
               <DropdownMenuItem key={team.name} onClick={() => setActiveTeam(team)} className='gap-2 p-2'>
-                <div className='flex size-6 items-center justify-center rounded-md border'>
-                  <team.logo className='size-3.5 shrink-0' />
+                <div className='flex size-6 items-center justify-center rounded-md'>
+                  <team.logo className='size-4 shrink-0' />
                 </div>
                 {team.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>

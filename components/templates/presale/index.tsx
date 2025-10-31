@@ -383,7 +383,6 @@ function TableCellViewer({ item, isAction = false }: { item: PresaleEvent; isAct
     e.preventDefault()
 
     const formData = new FormData(e.currentTarget)
-    console.log(formData)
     const updatedEvent = {
       ...item,
       lockedTbcFrom: formData.get('lockedTbcFrom') as string,
@@ -391,8 +390,6 @@ function TableCellViewer({ item, isAction = false }: { item: PresaleEvent; isAct
       lockedRewardFrom: formData.get('lockedRewardFrom') as string,
       lockedRewardTo: formData.get('lockedRewardTo') as string,
     }
-
-    console.log('updating event', updatedEvent)
 
     updateEvent(item.id, updatedEvent)
   }

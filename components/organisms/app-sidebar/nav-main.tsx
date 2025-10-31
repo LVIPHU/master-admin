@@ -1,18 +1,5 @@
 'use client'
-
-import { ChevronRight, type LucideIcon } from 'lucide-react'
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import {
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-} from '@/components/ui/sidebar'
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu } from '@/components/ui/sidebar'
 import NavItems from '@/components/organisms/app-sidebar/nav-items'
 
 export default function NavMain({
@@ -21,7 +8,7 @@ export default function NavMain({
   items: {
     title: string
     url: string
-    icon?: LucideIcon
+    icon?: React.FC<React.SVGProps<SVGSVGElement>>
     isActive?: boolean
     items?: {
       title: string

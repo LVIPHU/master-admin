@@ -69,7 +69,6 @@ function createVoucherContext(name: string) {
       () => getEvent(`${name.toLowerCase()}Voucher` as EventType)?.percent ?? 0,
       [getEvent]
     )
-    console.log(`${name}Voucher`, eventVoucherPercent)
 
     const calculateVoucher = useCallback((): VoucherRow[] => {
       return Array.from({ length: qualityVoucher }, (_, i) => i).map((idx: number) => {
@@ -79,7 +78,6 @@ function createVoucherContext(name: string) {
         const valueUSD = amountTBC * tbcPrice
         const percent = voucherPercent[idx] ?? 0
         const finalPercent = percent + eventVoucherPercent
-        console.log('finalPercent', finalPercent)
         const finalValueUSD = valueUSD * (1 + eventVoucherPercent / 100)
 
         return {

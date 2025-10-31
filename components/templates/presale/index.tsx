@@ -240,11 +240,11 @@ export function PresaleTemplate() {
             <SelectValue placeholder='Select a view' />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='event'>Presale Event</SelectItem>
+            <SelectItem value='event'>Lock And Unlock</SelectItem>
           </SelectContent>
         </Select>
         <TabsList className='**:data-[slot=badge]:bg-muted-foreground/30 hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:px-1 @4xl/main:flex'>
-          <TabsTrigger value='event'>Presale Event</TabsTrigger>
+          <TabsTrigger value='event'>Lock And Unlock</TabsTrigger>
         </TabsList>
         <div className='flex items-center gap-2'>
           <Button variant='outline' size='sm' onClick={addEvent}>
@@ -439,7 +439,7 @@ function TableCellViewer({ item, isAction = false }: { item: PresaleEvent; isAct
             Submit
           </Button>
           <DrawerClose asChild>
-            <Button variant='outline'>Done</Button>
+            <Button variant='outline'>Close</Button>
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>

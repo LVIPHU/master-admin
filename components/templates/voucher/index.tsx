@@ -125,36 +125,41 @@ export default function VoucherTemplate() {
       accessorKey: 'amountTBC',
       id: `${capitalizeFirst(tabValue)} Voucher Amount`,
       header: `${capitalizeFirst(tabValue)} Voucher Amount`,
-      cell: ({ row }) => (
-        <form
-          className='flex justify-end bg-green-200'
-          onSubmit={(e) => {
-            e.preventDefault()
+      cell: ({ row }) => {
+        if (row.index === 0) {
+          return (
+            <form
+              className='flex justify-end bg-green-200'
+              onSubmit={(e) => {
+                e.preventDefault()
 
-            const input = e.currentTarget.querySelector('input')
-            const value = input?.value
+                const input = e.currentTarget.querySelector('input')
+                const value = input?.value
 
-            if (!value) return
+                if (!value) return
 
-            updateCell('voucherAmount', row.index, Number(value))
+                updateCell('voucherAmount', row.index, Number(value))
 
-            toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-              loading: `Saving ${row.original.package}`,
-              success: 'Done',
-              error: 'Error',
-            })
-          }}
-        >
-          <Label htmlFor={`${row.original.package}-buyer-commission-amount`} className='sr-only'>
-            Target
-          </Label>
-          <Input
-            className='hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent'
-            defaultValue={row.original.amountTBC}
-            id={`${row.original.package}-buyer-commission-amount`}
-          />
-        </form>
-      ),
+                toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+                  loading: `Saving ${row.original.package}`,
+                  success: 'Done',
+                  error: 'Error',
+                })
+              }}
+            >
+              <Label htmlFor={`${row.original.package}-buyer-commission-amount`} className='sr-only'>
+                Target
+              </Label>
+              <Input
+                className='hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent'
+                defaultValue={row.original.amountTBC}
+                id={`${row.original.package}-buyer-commission-amount`}
+              />
+            </form>
+          )
+        }
+        return <p className='text-right'>{row.original.amountTBC}</p>
+      },
     },
     {
       accessorKey: 'valueUSD',
@@ -185,35 +190,40 @@ export default function VoucherTemplate() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => (
-        <form
-          className='flex items-center justify-end bg-green-200'
-          onSubmit={(e) => {
-            e.preventDefault()
-            const input = e.currentTarget.querySelector('input')
-            const value = input?.value
+      cell: ({ row }) => {
+        if (row.index === 0) {
+          return (
+            <form
+              className='flex items-center justify-end bg-green-200'
+              onSubmit={(e) => {
+                e.preventDefault()
+                const input = e.currentTarget.querySelector('input')
+                const value = input?.value
 
-            if (!value) return
+                if (!value) return
 
-            updateCell('voucherPercent', row.index, Number(value))
-            toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-              loading: `Saving ${row.original.package}`,
-              success: 'Done',
-              error: 'Error',
-            })
-          }}
-        >
-          <Label htmlFor={`${row.original.package}-final-buyer-commission`} className='sr-only'>
-            final-buyer-commission
-          </Label>
-          <Input
-            className='hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent'
-            defaultValue={row.original.finalPercent}
-            id={`${row.original.package}-final-buyer-commission`}
-          />
-          <p>%</p>
-        </form>
-      ),
+                updateCell('voucherPercent', row.index, Number(value))
+                toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
+                  loading: `Saving ${row.original.package}`,
+                  success: 'Done',
+                  error: 'Error',
+                })
+              }}
+            >
+              <Label htmlFor={`${row.original.package}-final-buyer-commission`} className='sr-only'>
+                final-buyer-commission
+              </Label>
+              <Input
+                className='hover:bg-input/30 focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30 h-8 w-16 border-transparent bg-transparent text-right shadow-none focus-visible:border dark:bg-transparent'
+                defaultValue={row.original.finalPercent}
+                id={`${row.original.package}-final-buyer-commission`}
+              />
+              <p>%</p>
+            </form>
+          )
+        }
+        return <p className='text-right'>{row.original.finalPercent}%</p>
+      },
     },
   ]
 

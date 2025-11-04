@@ -14,10 +14,7 @@ import {
 } from 'lucide-react'
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 import NavMain from './nav-main'
-import NavProjects from './nav-projects'
-import NavUser from './nav-user'
 import TeamSwitcher from './team-switcher'
-import { NavSecondary } from '@/components/organisms/app-sidebar/nav-secondary'
 import LogoSVG from '@/public/assets/logo.svg'
 
 // This is sample data.

@@ -1,5 +1,5 @@
 'use client'
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu } from '@/components/ui/sidebar'
+import { SidebarGroup, SidebarMenu } from '@/components/ui/sidebar'
 import NavItems from '@/components/organisms/app-sidebar/nav-items'
 
 export default function NavMain({
@@ -18,7 +18,6 @@ export default function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Presale</SidebarGroupLabel>
       <SidebarMenu>
         <NavItems items={items} />
       </SidebarMenu>

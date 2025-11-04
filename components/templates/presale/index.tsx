@@ -409,7 +409,7 @@ function TableCellViewer({ item, isAction = false }: { item: PresaleEvent; isAct
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className='gap-1'>
-          <DrawerTitle>Edit Presale Event</DrawerTitle>
+          <DrawerTitle>Edit Event</DrawerTitle>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
           <form id='form-edit-event' onSubmit={onSubmit} className='flex flex-col gap-4'>

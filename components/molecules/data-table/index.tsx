@@ -142,9 +142,7 @@ export function DataTable() {
           </Tooltip>
         </div>
       ),
-      cell: ({ row }) => (
-        <p className='text-right'>{row.original.finalPercent} %</p>
-      ),
+      cell: ({ row }) => <p className='text-right'>{row.original.finalPercent} %</p>,
     },
     {
       id: 'title_0',
